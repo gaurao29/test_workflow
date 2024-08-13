@@ -20,7 +20,7 @@ jobs:
             changed_files="$changed_files$file,"
           done
           changed_files=${changed_files%?} # Remove the trailing comma
-          echo "$changed_files"
+          echo "changed_files:$changed_files"
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -35,7 +35,6 @@ jobs:
             echo $(git diff -U0 origin/$BASE_BRANCH...HEAD -- $file | grep '^[+]' | grep -Ev '^(--- a/|\+\+\+ b/)' | sed -r "s/^([^-+ ]*)[-+ ]/\\1/" | grep -E '^\s*(get|post|put|delete|patch)\s+' | tr -d "'" | tr -d '"' | sed 's/^[ \t]*//;s/[ \t]*$//') > "diff_$file" 
             cat "diff_$file"
           done
-          ls
         env:
           BASE_BRANCH: ${{ github.base_ref }}
       - name: Check if diff file still exists
@@ -45,4 +44,4 @@ jobs:
       - name: Run verification script
         uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@v1.0.0
         with:
-          diff_file_path: ${{ github.workspace }}/diff.txt
+          diff_file_path: ${{ github.workspace }}/diff_*.md
