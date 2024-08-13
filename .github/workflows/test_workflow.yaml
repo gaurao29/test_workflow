@@ -23,6 +23,7 @@ jobs:
           BASE_BRANCH: ${{ github.base_ref }}
       - name: Check if diff file still exists
         run: |
+          pwd
           ls -l
       - name: Run verification script
         uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@testing_diff
