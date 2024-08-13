@@ -1,0 +1,31 @@
+name: "Check PR diff"
+on:
+  [pull_request]
+
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+    name: PR Diff
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Fetch only the last 2 commits
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+      - name: Show diff of changed files
+        shell: bash
+        run: |
+          echo $(git diff -U0 origin/$BASE_BRANCH...HEAD -- *.md | grep '^[+]' | grep -Ev '^(--- a/|\+\+\+ b/)' | sed -r "s/^([^-+ ]*)[-+ ]/\\1/" | grep -E '^\s*(get|post|put|delete|patch)\s+' | tr -d "'" | tr -d '"' | sed 's/^[ \t]*//;s/[ \t]*$//') > diff.txt
+          cat diff.txt
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+      - name: Check if diff file still exists
+        run: |
+          pwd
+          ls -l
+      - name: Run verification script
+        uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@testing_diff
+        with:
+          diff_file_path: ${{ github.workspace }}/diff.txt
