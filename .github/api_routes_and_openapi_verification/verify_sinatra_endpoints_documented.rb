@@ -38,7 +38,7 @@ end
 
 app_url_prefix_map = {}
 app_file_with_url_prefix = ENV.fetch('APP_FILE_PIPE_URL_PREFIX', '')&.split(',')
-app_file_with_url_prefix.split(',').each do |pair|
+app_file_with_url_prefix.each do |pair|
   key, value = pair.split('|')
   app_url_prefix_map[key] = value
 end
