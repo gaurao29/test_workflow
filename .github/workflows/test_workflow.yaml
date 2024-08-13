@@ -10,12 +10,6 @@ jobs:
       - name: Check if app files changed
         id: changed-files-specific
         uses: tj-actions/changed-files@v44
-        with:
-          # Here we are checking if new api been added to the app, to check its sufficient to check if only any *_app.rb
-          # files been changed with PR this will restricts adding warning comment on un-relevant PR to some extent but not ideal
-          files_yaml: |
-            app:
-              - lib/*_app.rb
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
