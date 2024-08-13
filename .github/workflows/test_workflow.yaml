@@ -32,9 +32,10 @@ jobs:
         shell: bash
         run: |
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
-            echo $(git diff -U0 origin/$BASE_BRANCH...HEAD -- $file | grep '^[+]' | grep -Ev '^(--- a/|\+\+\+ b/)' | sed -r "s/^([^-+ ]*)[-+ ]/\\1/" | grep -E '^\s*(get|post|put|delete|patch)\s+' | tr -d "'" | tr -d '"' | sed 's/^[ \t]*//;s/[ \t]*$//') > "$file_diff.txt"
-            cat "$file_diff.txt"
+            echo $(git diff -U0 origin/$BASE_BRANCH...HEAD -- $file | grep '^[+]' | grep -Ev '^(--- a/|\+\+\+ b/)' | sed -r "s/^([^-+ ]*)[-+ ]/\\1/" | grep -E '^\s*(get|post|put|delete|patch)\s+' | tr -d "'" | tr -d '"' | sed 's/^[ \t]*//;s/[ \t]*$//') > "diff_$file" 
+            cat "diff_$file"
           done
+          ls
         env:
           BASE_BRANCH: ${{ github.base_ref }}
       - name: Check if diff file still exists
