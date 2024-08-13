@@ -8,7 +8,8 @@ get '/meta/charts' do
         GoshPosh::Json.generate(result)
 end
 
-get '/meta/charts/:chart_id2/edition3' do
+
+get '/meta/charts/:chart_id/edition' do
         chart_id = params[:chart_id] unless params[:chart_id].nil? || params[:chart_id].empty?
         raise Pm::Service::Errors::NotFoundError unless chart_id
 
@@ -16,7 +17,7 @@ get '/meta/charts/:chart_id2/edition3' do
         GoshPosh::Json.generate(result)
 end
 
-get '/meta/charts/:chart_id/edition' do
+get '/meta/charts/:chart_id2/edition3' do
         chart_id = params[:chart_id] unless params[:chart_id].nil? || params[:chart_id].empty?
         raise Pm::Service::Errors::NotFoundError unless chart_id
 
