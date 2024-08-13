@@ -65,7 +65,7 @@ def find_sinatra_routes_v2(diff_file_paths, app_file_url_prefix_map)
 end
 
 map = {'README.md' => '/readme', 'CHANGELOG.md' => '/changelog'}
-all_routes = find_sinatra_routes_v2(ENV['DIFF_FILE_PATH'],map)
+all_routes = find_sinatra_routes_v2(Dir[ENV['DIFF_FILE_PATH']],map)
 puts "All routes:"
 all_routes.each do |route|
   puts route
