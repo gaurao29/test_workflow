@@ -1,4 +1,10 @@
 name: "Verify api endpoints documented"
+inputs:
+  diff_file_path:
+    description: "Diff file"
+    required: true
+    type: string
+  
 runs:
   using: 'composite'
   steps:
@@ -13,5 +19,6 @@ runs:
           message=$(jruby $GITHUB_ACTION_PATH/verify_sinatra_endpoints_documented.rb)
           echo $message
         env:
+          DIFF_FILE_PATH: ${{ inputs.diff_file_path }}
           GITHUB_ACTION_PATH: ${{ github.action_path }}
         shell: bash

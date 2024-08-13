@@ -10,16 +10,15 @@ def sanitize_route(route_with_verb)
   nil
 end
 
-def find_sinatra_routes(url_prefix)
+def find_sinatra_routes(diff_file_path, url_prefix)
   # Define the HTTP verbs that correspond to Sinatra routes
   http_verbs = %w[get post put delete patch]
   routes = Set.new
-  puts "Reading file: #{File.dirname(__FILE__)}"
-  file_path = "#{File.dirname(__FILE__)}/diff.txt"
+  puts "Reading file: #{diff_file_path}"
   # get /meta/charts do get /meta/charts/:chart_id/edition do
   # get /meta/charts | get /meta/charts/:chart_id/edition |
   # Read the file line by line and check for HTTP verbs
-  File.readlines(file_path).each_with_index do |line, _index|
+  File.readlines(diff_file_path).each_with_index do |line, _index|
     line = sanitize_route(line.strip)
     split_routes = line.split('|')
     puts "Split routes: #{split_routes}"
@@ -37,9 +36,8 @@ def find_sinatra_routes(url_prefix)
   routes
 end
 
-puts
 
-all_routes = find_sinatra_routes('')
+all_routes = find_sinatra_routes(ENV['DIFF_FILE_PATH'],'')
 puts "All routes:"
 all_routes.each do |route|
   puts route
