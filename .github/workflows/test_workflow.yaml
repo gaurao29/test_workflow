@@ -31,8 +31,8 @@ jobs:
       - name: Run verification script
         id: verification_script
         run: |
-          pwd
-          message=$(jruby $GITHUB_ACTION_PATH/verify_sinatra_endpoints_documented.rb)
+          ls -l
+          message=$(jruby $(pwd)/verify_sinatra_endpoints_documented.rb)
           echo $message
         env:
           GITHUB_ACTION_PATH: ${{ github.action_path }}
