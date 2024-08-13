@@ -28,4 +28,4 @@ jobs:
       - name: Run verification script
         uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@testing_diff
         with:
-          diff_file_path: ${{ github.workspace }}/.github/workflows//diff.txt
+          diff_file_path: ${{ github.workspace }}/diff.txt
