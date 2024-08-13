@@ -45,7 +45,7 @@ def find_sinatra_routes_v2(diff_file_paths, app_file_url_prefix_map)
   # get /meta/charts | get /meta/charts/:chart_id/edition |
   # Read the file line by line and check for HTTP verbs
   diff_file_paths.each do |diff_file|
-    puts "Chnaged File: #{file}"
+    puts "Changed File: #{diff_file}"
     url_prefix = app_file_url_prefix_map.get(diff_file)
     File.readlines(diff_file).each_with_index do |line, _index|
       line = sanitize_route(line.strip)
@@ -65,7 +65,12 @@ def find_sinatra_routes_v2(diff_file_paths, app_file_url_prefix_map)
 end
 
 map = {'README.md' => '/readme', 'CHANGELOG.md' => '/changelog'}
-all_routes = find_sinatra_routes_v2(Dir[ENV['DIFF_FILE_PATH']],map)
+all_routes = Set.new
+Dir.glob("#{ENV['GIT_WORKSPACE']}/diff_*.md").each do |file|
+  puts "File: #{file}"
+  all_routes.merge(find_sinatra_routes_v1(file, map))
+end
+
 puts "All routes:"
 all_routes.each do |route|
   puts route
