@@ -43,10 +43,8 @@ app_file_with_url_prefix.each do |pair|
   app_url_prefix_map[key] = value
 end
 
-puts "Workspace:#{ENV['GITHUB_WORKSPACE']}"
-
 all_routes = Set.new
-Dir.glob("#{ENV['GIT_WORKSPACE']}/diff_*.md").each do |file_path|
+Dir.glob("#{ENV['GITHUB_WORKSPACE']}/diff_*.md").each do |file_path|
   file_name = File.basename(file_path).gsub('diff_', '')
   url_prefix = app_url_prefix_map[file_name]
   all_routes.merge(find_sinatra_routes_v2(file_path, url_prefix))
