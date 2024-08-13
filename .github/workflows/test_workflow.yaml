@@ -31,6 +31,6 @@ jobs:
         env:
           BASE_BRANCH: ${{ github.base_ref }}
       - name: Run verification script
-        uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@v1.0.0
+        uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@testing_diff
         env:
           GIT_WORKSPACE: ${{ github.workspace }}
