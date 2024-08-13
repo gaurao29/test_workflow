@@ -11,21 +11,16 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v44
         with:
-          # Here we are checking if new api been added to the app, to check its sufficient to check if only any *_app.rb
-          # files been changed with PR this will restricts adding warning comment on un-relevant PR to some extent but not ideal
-          files_yaml: |
-            app:
-              - *.md
+          files: |
+             **.md
       - name: List all changed files
         run: |
-          - name: List all changed files
-            run: |
-              changed_files=''
-              for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
-                changed_files="$changed_files$file,"
-              done
-              changed_files=${changed_files%?} # Remove the trailing comma
-              echo "Changed files: $changed_files"
+          changed_files=''
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+            changed_files="$changed_files$file,"
+          done
+          changed_files=${changed_files%?} # Remove the trailing comma
+          echo "$changed_files"
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
