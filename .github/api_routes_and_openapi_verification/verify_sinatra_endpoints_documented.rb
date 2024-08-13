@@ -35,8 +35,17 @@ def find_sinatra_routes_v2(diff_file_path, url_prefix)
 end
 
 
+
+app_url_prefix_map = {}
+app_file_with_url_prefix = ENV.fetch('APP_FILE_PIPE_URL_PREFIX', '')&.split(',')
+app_file_with_url_prefix.split(',').each do |pair|
+  key, value = pair.split('|')
+  app_url_prefix_map[key] = value
+end
+
+puts "Workspace:#{ENV['GITHUB_WORKSPACE']}"
+
 all_routes = Set.new
-map = {'README.md' => '/readme', 'CHANGELOG.md' => '/changelog'}
 Dir.glob("#{ENV['GIT_WORKSPACE']}/diff_*.md").each do |file_path|
   file_name = File.basename(file_path).gsub('diff_', '')
   url_prefix = map[file_name]
