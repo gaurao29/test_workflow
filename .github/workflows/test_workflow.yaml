@@ -24,17 +24,6 @@ jobs:
       - name: Check if diff file still exists
         run: |
           ls -l
-      - name: Setup jruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 'jruby-9.3.0.0'
       - name: Run verification script
-        id: verification_script
-        run: |
-          ls -l
-          message=$(jruby $(pwd)/verify_sinatra_endpoints_documented.rb)
-          echo $message
-        env:
-          GITHUB_ACTION_PATH: ${{ github.action_path }}
-        shell: bash
-      
+        uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@testing_diff
+    
