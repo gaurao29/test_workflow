@@ -22,3 +22,8 @@ runs:
           DIFF_FILE_PATH: ${{ inputs.diff_file_path }}
           GITHUB_ACTION_PATH: ${{ github.action_path }}
         shell: bash
+
+
+        # Challange 1: Creating a diff file restricting it to only lib/*_app pattern file changes, Do not need all files
+        # Chalange  2: Get diff file generated in previous step and pass it to the next steps
+        # Chalange  3: Having diff file path as an input but how to map url prefixes should 
