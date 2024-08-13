@@ -7,6 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     name: PR Diff
     steps:
+      - name: Check if app files changed
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+             **.md
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -17,15 +23,14 @@ jobs:
       - name: Show diff of changed files
         shell: bash
         run: |
-          echo $(git diff -U0 origin/$BASE_BRANCH...HEAD -- *.md | grep '^[+]' | grep -Ev '^(--- a/|\+\+\+ b/)' | sed -r "s/^([^-+ ]*)[-+ ]/\\1/" | grep -E '^\s*(get|post|put|delete|patch)\s+' | tr -d "'" | tr -d '"' | sed 's/^[ \t]*//;s/[ \t]*$//') > diff.txt
-          cat diff.txt
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+            echo $(git diff -U0 origin/$BASE_BRANCH...HEAD -- $file | grep '^[+]' | grep -Ev '^(--- a/|\+\+\+ b/)' | sed -r "s/^([^-+ ]*)[-+ ]/\\1/" | grep -E '^\s*(get|post|put|delete|patch)\s+' | tr -d "'" | tr -d '"' | sed 's/^[ \t]*//;s/[ \t]*$//') > "diff_$file" 
+            cat "diff_$file"
+          done
         env:
           BASE_BRANCH: ${{ github.base_ref }}
-      - name: Check if diff file still exists
-        run: |
-          pwd
-          ls -l
       - name: Run verification script
         uses: gaurao29/test_workflow/.github/api_routes_and_openapi_verification@testing_diff
-        with:
-          diff_file_path: ${{ github.workspace }}/diff.txt
+        env:
+          APP_FILE_PIPE_URL_PREFIX: "README.md|/readme,CHANGELOG.md|/changelog"
+
